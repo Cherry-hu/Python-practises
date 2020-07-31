@@ -36,7 +36,11 @@ class Gaussian():
         #TODO: Calculate the mean of the data set. Remember that the data set is stored in self.data
         # Change the value of the mean attribute to be the mean of the data set
         # Return the mean of the data set           
-        pass
+        avg = 1.0 * sum(self.data) / len(self.data)
+        
+        self.mean = avg
+        
+        return self.mean
                 
 
 
@@ -61,7 +65,23 @@ class Gaussian():
         #
         #   Make sure to update self.stdev and return the standard deviation as well    
             
-        pass
+        if sample:
+            n = len(self.data) - 1
+        else:
+            n = len(self.data)
+    
+        mean = self.mean
+    
+        sigma = 0
+    
+        for d in self.data:
+            sigma += (d - mean) ** 2
+        
+        sigma = math.sqrt(sigma / n)
+    
+        self.stdev = sigma
+        
+        return self.stdev
         
 
     def read_data_file(self, file_name, sample=True):
@@ -93,7 +113,10 @@ class Gaussian():
         #       You can use the calculate_mean() method with self.calculate_mean()
         #   Update self.stdev with the standard deviation of the data_list. Use the 
         #       calcaulte_stdev() method.
-                
+        
+        self.data = data_list
+        self.mean = self.calculate_mean()
+        self.stdev = self.calculate_stdev(sample)       
         
     def plot_histogram(self):
         """Method to output a histogram of the instance variable data using 
@@ -109,7 +132,10 @@ class Gaussian():
         # TODO: Plot a histogram of the data_list using the matplotlib package.
         #       Be sure to label the x and y axes and also give the chart a title
         
-                
+        plt.hist(self.data)
+        plt.title('Histogram of Data')
+        plt.xlabel('data')
+        plt.ylabel('count')        
         
     def pdf(self, x):
         """Probability density function calculator for the gaussian distribution.
@@ -124,7 +150,7 @@ class Gaussian():
         
         # TODO: Calculate the probability density function of the Gaussian distribution
         #       at the value x. You'll need to use self.stdev and self.mean to do the calculation
-        pass        
+       return (1.0 / (self.stdev * math.sqrt(2*math.pi))) * math.exp(-0.5*((x - self.mean) / self.stdev) ** 2)        
 
     def plot_histogram_pdf(self, n_spaces = 50):
 
